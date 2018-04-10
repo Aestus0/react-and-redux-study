@@ -1,0 +1,38 @@
+:local(.HolyGrail) {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+:global(header) {
+    flex: 1;
+}
+
+:global(footer) {
+    flex: 1;
+}
+
+:local(.HolyGrail_content) {
+    flex: 1;
+}
+
+:local(.HolyGrail_body ) {
+    display: flex;
+    composes: HolyGrail_content;
+    composes: App_body_background from './AppOther.css';
+}
+
+:local(.HolyGrail_nav) {
+    /* 两个边栏的宽度设为12em */
+    flex: 0 0 12em;
+}
+
+:local(.HolyGrail_ads) {
+    /* 两个边栏的宽度设为12em */
+    flex: 0 0 12em;
+}
+
+:local(.HolyGrail_nav) {
+    /* 导航放到最左边 */
+    order: -1;
+}
