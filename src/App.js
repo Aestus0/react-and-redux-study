@@ -15,13 +15,15 @@ const App = () => (
                     path="/order/:direction(asc|desc)"
                     component={ComponentWithRegex}
                 />
-                <Route path="/:number" render={(props) => <Number {...props} />} />
+                <Route path="/:number" render={renderNumber} />
 
             </Switch>
         </div>
     </BrowserRouter>
 );
 
+const renderNumber = (props) =>
+    <Number {...props} />;
 const Number = (props) => (
     <h1>{props.match.params.number}</h1>
 );
