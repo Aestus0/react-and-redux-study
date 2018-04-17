@@ -8,7 +8,25 @@ const buttonStyle = {
     margin: '10px'
 };
 
-class Counter extends Component {
+function Counter(props) {
+    const {caption, onIncrement, onDecrement, value} = props;
+    return (
+        <div>
+            <button style={buttonStyle} onClick={onIncrement}>+</button>
+            <button style={buttonStyle} onClick={onDecrement}>-</button>
+            <span>{caption} count: {value}</span>
+        </div>
+    )
+}
+
+Counter.propTypes = {
+    caption: PropTypes.string.isRequired,
+    onIncrement: PropTypes.func.isRequired,
+    onDecrement: PropTypes.func.isRequired,
+    value: PropTypes.number.isRequired
+};
+
+class CounterContainer extends Component {
     constructor(props) {
         super(props);
 
@@ -20,13 +38,13 @@ class Counter extends Component {
         this.state = this.getOwnState();
     }
 
-
     componentDidMount() {
         store.subscribe(this.onChange);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return (nextProps.caption !== this.props.caption) || (nextState !== this.state);
+        return (nextProps.caption !== this.props.caption) ||
+            (nextState.value !== this.state.value);
     }
 
     componentWillUnmount() {
@@ -57,18 +75,18 @@ class Counter extends Component {
         const {caption} = this.props;
 
         return (
-            <div>
-                <button style={buttonStyle} onClick={this.onIncrement}>+</button>
-                <button style={buttonStyle} onClick={this.onDecrement}>-</button>
-                <span>{caption} count: {value}</span>
-            </div>
+            <Counter caption={caption}
+                     onIncrement={this.onIncrement}
+                     onDecrement={this.onDecrement}
+                     value={value}
+            />
         );
     }
 
 }
 
-Counter.propTypes = {
+CounterContainer.prototypes = {
     caption: PropTypes.string.isRequired
 };
 
-export default Counter;
+export default CounterContainer;

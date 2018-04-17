@@ -1,8 +1,20 @@
 import React, {Component} from 'react';
+import ProtoType from 'prop-types';
 
 import store from '../Store';
 
-class Summary extends Component {
+
+function Summary({sum}) {
+    return (
+        <div>Total Count : {sum}</div>
+    )
+}
+
+Summary.prototypes = {
+    sum: ProtoType.number.isRequired
+};
+
+class SummaryContainer extends Component {
     constructor(props) {
         super(props);
 
@@ -40,9 +52,9 @@ class Summary extends Component {
 
     render() {
         return (
-            <div>Total Count : {this.state.sum}</div>
+            <Summary sum={this.state.sum} />
         );
     }
 }
 
-export default Summary;
+export default SummaryContainer;
