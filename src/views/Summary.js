@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import ProtoType from 'prop-types';
 
-import store from '../Store';
-
 
 function Summary({sum}) {
     return (
@@ -15,8 +13,8 @@ Summary.prototypes = {
 };
 
 class SummaryContainer extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super(...arguments);
 
         this.onChange = this.onChange.bind(this);
 
@@ -24,7 +22,7 @@ class SummaryContainer extends Component {
     }
 
     componentDidMount() {
-        store.subscribe(this.onChange);
+        this.context.store.subscribe(this.onChange);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -32,7 +30,7 @@ class SummaryContainer extends Component {
     }
 
     componentWillUnmount() {
-        store.unsubscribe(this.onChange);
+        this.context.store.unsubscribe(this.onChange);
     }
 
     onChange() {
@@ -40,7 +38,7 @@ class SummaryContainer extends Component {
     }
 
     getOwnState() {
-        const state = store.getState();
+        const state = this.context.store.getState();
         let sum = 0;
         for (const key in state) {
             if (state.hasOwnProperty(key)) {
@@ -56,5 +54,9 @@ class SummaryContainer extends Component {
         );
     }
 }
+
+SummaryContainer.contextTypes = {
+    store: ProtoType.object
+};
 
 export default SummaryContainer;

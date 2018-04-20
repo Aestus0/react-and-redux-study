@@ -3,6 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import ControlPanel from './views/ControlPanel';
+import Provider from "./Provider";
+import store from './Store';
 
-ReactDOM.render(<ControlPanel />, document.getElementById('root'));
+ReactDOM.render(
+    <Provider store={store}>
+        <ControlPanel />
+    </Provider>,
+    document.getElementById('root')
+);
 registerServiceWorker();
