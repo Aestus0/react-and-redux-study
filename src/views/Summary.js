@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
 import ProtoType from 'prop-types';
+import {connect} from 'react-redux';
 
 
 function Summary({sum}) {
@@ -12,51 +13,16 @@ Summary.prototypes = {
     sum: ProtoType.number.isRequired
 };
 
-class SummaryContainer extends Component {
-    constructor() {
-        super(...arguments);
 
-        this.onChange = this.onChange.bind(this);
 
-        this.state = this.getOwnState();
-    }
-
-    componentDidMount() {
-        this.context.store.subscribe(this.onChange);
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.state.sum !== nextState.sum;
-    }
-
-    componentWillUnmount() {
-        this.context.store.unsubscribe(this.onChange);
-    }
-
-    onChange() {
-        this.setState(this.getOwnState());
-    }
-
-    getOwnState() {
-        const state = this.context.store.getState();
-        let sum = 0;
-        for (const key in state) {
-            if (state.hasOwnProperty(key)) {
-                sum += state[key];
-            }
+function mapStateToProps(state, ownProps) {
+    let sum = 0;
+    for (const key in state) {
+        if (state.hasOwnProperty(key)) {
+            sum += state[key];
         }
-        return {sum};
     }
-
-    render() {
-        return (
-            <Summary sum={this.state.sum} />
-        );
-    }
+    return {sum};
 }
 
-SummaryContainer.contextTypes = {
-    store: ProtoType.object
-};
-
-export default SummaryContainer;
+export default connect(mapStateToProps)(Summary);

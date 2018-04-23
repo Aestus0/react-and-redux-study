@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
+import React from 'react';
 import * as Actions from '../Actions';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 
 
 const buttonStyle = {
@@ -25,70 +26,21 @@ Counter.propTypes = {
     value: PropTypes.number.isRequired
 };
 
-class CounterContainer extends Component {
-    constructor() {
-        super(...arguments);
-
-        this.onIncrement = this.onIncrement.bind(this);
-        this.onDecrement = this.onDecrement.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.getOwnState = this.getOwnState.bind(this);
-
-        this.state = this.getOwnState();
+function mapStateToProps(state, ownProps) {
+    return {
+        value: state[ownProps.caption]
     }
-
-    componentDidMount() {
-        this.context.store.subscribe(this.onChange);
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return (nextProps.caption !== this.props.caption) ||
-            (nextState.value !== this.state.value);
-    }
-
-    componentWillUnmount() {
-        this.context.store.unsubscribe(this.onChange);
-    }
-
-    getOwnState() {
-        return {
-            value: this.context.store.getState()[this.props.caption]
-        };
-    }
-
-    onIncrement() {
-        this.context.store.dispatch(Actions.increment(this.props.caption));
-    }
-
-    onDecrement() {
-        this.context.store.dispatch(Actions.decrement(this.props.caption));
-    }
-
-    onChange() {
-        this.setState(this.getOwnState());
-    }
-
-
-    render() {
-        const value = this.state.value;
-        const {caption} = this.props;
-
-        return (
-            <Counter caption={caption}
-                     onIncrement={this.onIncrement}
-                     onDecrement={this.onDecrement}
-                     value={value}
-            />
-        );
-    }
-
 }
 
-CounterContainer.prototypes = {
-    caption: PropTypes.string.isRequired
-};
-CounterContainer.contextTypes = {
-    store: PropTypes.object
-};
+function mapDispatchToProps(dispatch, ownProps) {
+    return {
+        onIncrement: () => {
+            dispatch(Actions.increment(ownProps.caption));
+        },
+        onDecrement: () => {
+            dispatch(Actions.decrement(ownProps.caption));
+        }
+    }
+}
 
-export default CounterContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(Counter);
